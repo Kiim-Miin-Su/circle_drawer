@@ -1,0 +1,73 @@
+#include <string>
+#include <vector>
+#include <map>
+#include <cmath>
+#include <algorithm>
+
+using namespace std;
+
+int solution(int a, int b, int c, int d) {
+    map<int, int> freq;
+    freq[a]++;
+    freq[b]++;
+    freq[c]++;
+    freq[d]++;
+    /*
+    같은 숫자라면 키값이 같아 size가 1로 정해지게 됩니다.
+    size 별로 나누어서 분류해보겠습니다.
+    */
+    
+    if (freq.size() == 1) {
+        // 네 개 모두 같을 때
+        return 1111 * a;
+    }
+
+    if (freq.size() == 2) {
+        // 두 가지 숫자가 있을 때
+        map<int, int>::iterator it = freq.begin();
+        int num1 = it->first;
+        int cnt1 = it->second;
+        it++;
+        int num2 = it->first;
+        int cnt2 = it->second;
+
+        if (cnt1 == 3) {
+            int p = num1;
+            int q = num2;
+            return pow(10 * p + q, 2);
+        } else if (cnt2 == 3) {
+            int p = num2;
+            int q = num1;
+            return pow(10 * p + q, 2);
+        } else {
+            // 2개 2개인 경우
+            return (num1 + num2) * abs(num1 - num2);
+        }
+    }
+
+    if (freq.size() == 3) {
+        // 하나는 2개, 나머지 둘은 1개일 때
+        int one1 = 0;
+        int one2 = 0;
+        map<int, int>::iterator it = freq.begin();
+        for (; it != freq.end(); it++) {
+            if (it->second == 1) {
+                if (one1 == 0) {
+                    one1 = it->first;
+                } else {
+                    one2 = it->first;
+                }
+            }
+        }
+        return one1 * one2;
+    }
+
+    // 모두 다를 때
+    int min_val = a;
+    if (b < min_val) min_val = b;
+    if (c < min_val) min_val = c;
+    if (d < min_val) min_val = d;
+    return min_val;
+}
+    
+   
